@@ -3,7 +3,35 @@
 <head>
     @include('partials.head')
 </head>
-<body class="font-sans bg-slate-100 dark:bg-[#101a22] text-slate-900 dark:text-white overflow-hidden h-screen flex flex-col">
+<body
+    x-data="{
+        currentProjectId: null,
+        init() {
+            // Listen for project selection to track current project
+            Livewire.on('project-selected', (data) => {
+                this.currentProjectId = data.projectId;
+            });
+        }
+    }"
+    @keydown.window="
+        // Ignore shortcuts when typing in inputs
+        if ($event.target.tagName === 'INPUT' || $event.target.tagName === 'TEXTAREA' || $event.target.isContentEditable) return;
+
+        // N - New Task (only if project is selected)
+        if ($event.key === 'n' || $event.key === 'N') {
+            if (currentProjectId) {
+                $event.preventDefault();
+                $dispatch('open-create-task-modal', { projectId: currentProjectId });
+            }
+        }
+        // P - New Project
+        if ($event.key === 'p' || $event.key === 'P') {
+            $event.preventDefault();
+            $dispatch('open-create-project-modal');
+        }
+    "
+    class="font-sans bg-slate-100 dark:bg-[#101a22] text-slate-900 dark:text-white overflow-hidden h-screen flex flex-col"
+>
     {{-- Header --}}
     <header class="h-16 shrink-0 flex items-center justify-between border-b border-slate-200 dark:border-slate-700/50 bg-white dark:bg-[#111518] px-6 z-20">
         <div class="flex items-center gap-8">
@@ -15,16 +43,15 @@
                 <h2 class="text-slate-900 dark:text-white text-xl font-bold tracking-tight">ZenFlow</h2>
             </a>
 
-            {{-- Search --}}
-            <label class="hidden md:flex relative group w-64 lg:w-96">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <x-lucide-search class="size-4 text-slate-400 group-focus-within:text-[#1392ec] transition-colors" />
-                </div>
-                <input
-                    class="block w-full rounded-lg border-none bg-slate-100 dark:bg-[#283239] py-2 pl-10 pr-3 text-sm placeholder-slate-500 focus:ring-2 focus:ring-[#1392ec] dark:text-white transition-all"
-                    placeholder="Search projects, tasks, or tags..."
-                    type="text"
-                />
+            {{-- Search - Trigger for Global Search Modal --}}
+            <button
+                @click="$dispatch('open-global-search')"
+                class="hidden md:flex items-center gap-3 relative group w-64 lg:w-96 px-3 py-2 rounded-lg bg-slate-100 dark:bg-[#283239] hover:bg-slate-200 dark:hover:bg-[#323d46] transition-colors cursor-pointer"
+            >
+                <x-lucide-search class="size-4 text-slate-400 group-hover:text-[#1392ec] transition-colors" />
+                <span class="text-sm text-slate-500">Search projects, tasks...</span>
+                <span class="ml-auto text-xs text-slate-500 border border-slate-600 rounded px-1.5 py-0.5">⌘K</span>
+            </button>
                 <div class="absolute inset-y-0 right-0 pr-2 flex items-center">
                     <span class="text-xs text-slate-500 border border-slate-600 rounded px-1.5 py-0.5">⌘K</span>
                 </div>
@@ -104,8 +131,11 @@
         </main>
     </div>
 
-    {{-- Task Details Slide-over --}}
+    {{-- Modals & Slide-overs --}}
     <livewire:task-details />
+    <livewire:global-search />
+    <livewire:create-project-modal />
+    <livewire:create-task-modal />
 
     @fluxScripts
 </body>

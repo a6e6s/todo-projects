@@ -59,6 +59,8 @@
                                 'group relative flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all duration-200',
                                 'bg-slate-800/80 border border-slate-700/50 shadow-glow' => $selectedProjectId === $project->id,
                                 'hover:bg-slate-800/50' => $selectedProjectId !== $project->id,
+                                // High Priority Glow Effect
+                                'ring-1 ring-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.15)]' => $project->priority->value === 'high' && $selectedProjectId !== $project->id,
                             ])
                         >
                             {{-- Active Indicator --}}
@@ -67,6 +69,11 @@
                                     class="absolute left-0 top-3 bottom-3 w-1 rounded-r-full"
                                     style="background-color: {{ $project->color ?? '#3b82f6' }}"
                                 ></div>
+                            @endif
+
+                            {{-- High Priority Indicator --}}
+                            @if($project->priority->value === 'high')
+                                <div class="absolute -top-1 -right-1 size-3 bg-red-500 rounded-full border-2 border-slate-900 animate-pulse"></div>
                             @endif
 
                             {{-- Drag Handle --}}

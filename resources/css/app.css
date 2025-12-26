@@ -98,24 +98,47 @@ select:focus[data-flux-control] {
 /* Draggable styles */
 .draggable-source {
     cursor: grab;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
 
 .draggable-source:active {
     cursor: grabbing;
 }
 
+.draggable-source:hover {
+    transform: translateY(-2px);
+}
+
 /* SortableJS styles */
 .sortable-ghost {
-    opacity: 0.3;
+    opacity: 0.4;
+    transform: scale(0.98);
 }
 
 .sortable-chosen {
-    box-shadow: 0 0 15px -3px rgba(19, 146, 236, 0.5);
+    box-shadow: 0 0 20px -3px rgba(19, 146, 236, 0.6);
+    transform: rotate(2deg) scale(1.02);
+    z-index: 50;
+}
+
+.sortable-drag {
+    transform: rotate(3deg) scale(1.05);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .sortable-fallback {
     opacity: 1 !important;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    transform: rotate(3deg) scale(1.05);
+}
+
+/* Kanban column drop indicator */
+.kanban-column {
+    transition: background-color 0.2s ease;
+}
+
+.kanban-column.sortable-chosen-drop {
+    background-color: rgba(19, 146, 236, 0.05);
 }
 
 [data-task-id] {
@@ -139,4 +162,9 @@ details > summary::-webkit-details-marker {
 /* Shadow glow utility */
 .shadow-glow {
     box-shadow: 0 0 15px -3px rgba(19, 146, 236, 0.3);
+}
+
+/* High priority project glow */
+.high-priority-glow {
+    box-shadow: 0 0 20px -5px rgba(239, 68, 68, 0.3);
 }

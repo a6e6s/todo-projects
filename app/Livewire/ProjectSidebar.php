@@ -103,6 +103,12 @@ class ProjectSidebar extends Component
         $this->selectedProjectId = null;
     }
 
+    #[On('project-created')]
+    public function onProjectCreated(): void
+    {
+        unset($this->projects);
+    }
+
     // ─────────────────────────────────────────────────────────────
     // Render
     // ─────────────────────────────────────────────────────────────

@@ -104,6 +104,12 @@ class KanbanBoard extends Component
         $this->clearTaskCache();
     }
 
+    #[On('task-created')]
+    public function onTaskCreated(): void
+    {
+        $this->clearTaskCache();
+    }
+
     public function moveTask(int $taskId, string $newStatus, array $orderedIds): void
     {
         $status = TaskStatus::tryFrom($newStatus);
