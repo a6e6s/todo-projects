@@ -38,7 +38,7 @@
                     <div class="p-2 bg-[#1392ec]/10 rounded-lg">
                         <x-lucide-folder-plus class="size-5 text-[#1392ec]" />
                     </div>
-                    <h2 class="text-lg font-semibold text-white">New Project</h2>
+                    <h2 class="text-lg font-semibold text-white">{{ __('app.new_project') }}</h2>
                 </div>
                 <button
                     @click="$wire.close()"
@@ -52,13 +52,13 @@
             <form wire:submit="create" class="p-6 space-y-5">
                 {{-- Project Title --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-400 mb-2">Project Name</label>
+                    <label class="block text-sm font-medium text-slate-400 mb-2">{{ __('app.project_name') }}</label>
                     <input
                         type="text"
                         wire:model="title"
                         x-init="$nextTick(() => { if (open) $el.focus() })"
                         x-effect="if (open) $el.focus()"
-                        placeholder="Enter project name..."
+                        placeholder="{{ __('app.enter_project_name') }}"
                         class="w-full px-4 py-3 bg-[#101a22] border border-[#283239] rounded-lg text-white placeholder-slate-500 focus:border-[#1392ec] focus:ring-1 focus:ring-[#1392ec] transition-colors"
                     />
                     @error('title')
@@ -68,7 +68,7 @@
 
                 {{-- Icon Picker --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-400 mb-2">Icon (optional)</label>
+                    <label class="block text-sm font-medium text-slate-400 mb-2">{{ __('app.icon_optional') }}</label>
                     <div class="flex flex-wrap gap-2">
                         @foreach($iconOptions as $iconOption)
                             <button
@@ -88,7 +88,7 @@
 
                 {{-- Color Picker --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-400 mb-2">Color</label>
+                    <label class="block text-sm font-medium text-slate-400 mb-2">{{ __('app.color') }}</label>
                     <div class="flex flex-wrap gap-2">
                         @foreach($colorOptions as $colorOption)
                             <button
@@ -106,9 +106,9 @@
 
                 {{-- Priority --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-400 mb-2">Priority</label>
+                    <label class="block text-sm font-medium text-slate-400 mb-2">{{ __('app.priority') }}</label>
                     <div class="grid grid-cols-3 gap-2">
-                        @foreach(['low' => 'Low', 'medium' => 'Medium', 'high' => 'High'] as $value => $label)
+                        @foreach(['low' => __('app.low'), 'medium' => __('app.medium'), 'high' => __('app.high')] as $value => $label)
                             <button
                                 type="button"
                                 wire:click="$set('priority', '{{ $value }}')"
@@ -126,7 +126,7 @@
 
                 {{-- Preview --}}
                 <div class="p-4 bg-[#101a22] rounded-lg border border-[#283239]">
-                    <p class="text-xs text-slate-500 mb-2">Preview</p>
+                    <p class="text-xs text-slate-500 mb-2">{{ __('app.preview') }}</p>
                     <div class="flex items-center gap-3">
                         <div
                             class="size-10 rounded-lg flex items-center justify-center text-lg"
@@ -152,14 +152,14 @@
                         @click="$wire.close()"
                         class="px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-white transition-colors"
                     >
-                        Cancel
+                        {{ __('app.cancel') }}
                     </button>
                     <button
                         type="submit"
                         wire:loading.attr="disabled"
                         class="px-6 py-2.5 bg-[#1392ec] hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors shadow-lg shadow-blue-500/20 disabled:opacity-50 flex items-center gap-2"
                     >
-                        <span wire:loading.remove wire:target="create">Create Project</span>
+                        <span wire:loading.remove wire:target="create">{{ __('app.create_project') }}</span>
                         <span wire:loading wire:target="create">
                             <svg class="animate-spin size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

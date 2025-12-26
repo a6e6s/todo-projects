@@ -171,3 +171,30 @@ details > summary::-webkit-details-marker {
 .high-priority-glow {
     box-shadow: 0 0 20px -5px rgba(239, 68, 68, 0.3);
 }
+
+/* RTL Support */
+[dir="rtl"] {
+    font-family: 'Tajawal', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+[dir="rtl"] .border-l {
+    border-left: 0;
+    border-right-width: 1px;
+}
+
+[dir="rtl"] .border-r {
+    border-right: 0;
+    border-left-width: 1px;
+}
+
+[dir="rtl"] .rounded-l-full {
+    border-radius: 0;
+    border-top-right-radius: 9999px;
+    border-bottom-right-radius: 9999px;
+}
+
+[dir="rtl"] .rounded-r-full {
+    border-radius: 0;
+    border-top-left-radius: 9999px;
+    border-bottom-left-radius: 9999px;
+}

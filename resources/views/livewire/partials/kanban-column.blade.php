@@ -52,7 +52,7 @@
                             <x-lucide-circle class="size-5 text-slate-400" />
                     @endswitch
                 </div>
-                <span class="text-sm text-slate-500 font-medium">No tasks</span>
+                <span class="text-sm text-slate-500 font-medium">{{ __('app.no_tasks') }}</span>
             </div>
         @endforelse
     </div>

@@ -38,7 +38,7 @@
                     <div class="p-2 bg-emerald-500/10 rounded-lg">
                         <x-lucide-plus-circle class="size-5 text-emerald-500" />
                     </div>
-                    <h2 class="text-lg font-semibold text-white">New Task</h2>
+                    <h2 class="text-lg font-semibold text-white">{{ __('app.new_task') }}</h2>
                 </div>
                 <button
                     @click="$wire.close()"
@@ -52,13 +52,13 @@
             <form wire:submit="create" class="p-6 space-y-5">
                 {{-- Task Title --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-400 mb-2">Task Title</label>
+                    <label class="block text-sm font-medium text-slate-400 mb-2">{{ __('app.task_title') }}</label>
                     <input
                         type="text"
                         wire:model="title"
                         x-init="$nextTick(() => { if (open) $el.focus() })"
                         x-effect="if (open) $el.focus()"
-                        placeholder="What needs to be done?"
+                        placeholder="{{ __('app.enter_task_title') }}"
                         class="w-full px-4 py-3 bg-[#101a22] border border-[#283239] rounded-lg text-white placeholder-slate-500 focus:border-[#1392ec] focus:ring-1 focus:ring-[#1392ec] transition-colors"
                     />
                     @error('title')
@@ -68,11 +68,11 @@
 
                 {{-- Description --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-400 mb-2">Description (optional)</label>
+                    <label class="block text-sm font-medium text-slate-400 mb-2">{{ __('app.description') }}</label>
                     <textarea
                         wire:model="description"
                         rows="3"
-                        placeholder="Add more details..."
+                        placeholder="{{ __('app.description_placeholder') }}"
                         class="w-full px-4 py-3 bg-[#101a22] border border-[#283239] rounded-lg text-white placeholder-slate-500 focus:border-[#1392ec] focus:ring-1 focus:ring-[#1392ec] transition-colors resize-none"
                     ></textarea>
                 </div>
@@ -81,7 +81,7 @@
                 <div class="grid grid-cols-2 gap-4">
                     {{-- Priority --}}
                     <div>
-                        <label class="block text-sm font-medium text-slate-400 mb-2">Priority</label>
+                        <label class="block text-sm font-medium text-slate-400 mb-2">{{ __('app.priority') }}</label>
                         <div class="flex gap-1.5">
                             @foreach(['low' => ['label' => 'Low', 'color' => 'blue'], 'medium' => ['label' => 'Med', 'color' => 'amber'], 'high' => ['label' => 'High', 'color' => 'red']] as $value => $config)
                                 <button
@@ -101,15 +101,15 @@
 
                     {{-- Status --}}
                     <div>
-                        <label class="block text-sm font-medium text-slate-400 mb-2">Status</label>
+                        <label class="block text-sm font-medium text-slate-400 mb-2">{{ __('app.status') }}</label>
                         <select
                             wire:model="status"
                             class="w-full px-4 py-2.5 bg-[#101a22] border border-[#283239] rounded-lg text-white focus:border-[#1392ec] focus:ring-1 focus:ring-[#1392ec] transition-colors"
                         >
-                            <option value="todo">To Do</option>
-                            <option value="doing">In Progress</option>
-                            <option value="review">Review</option>
-                            <option value="done">Done</option>
+                            <option value="todo">{{ __('app.todo') }}</option>
+                            <option value="doing">{{ __('app.doing') }}</option>
+                            <option value="review">{{ __('app.review') }}</option>
+                            <option value="done">{{ __('app.done') }}</option>
                         </select>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                 <div class="grid grid-cols-2 gap-4">
                     {{-- Due Date --}}
                     <div>
-                        <label class="block text-sm font-medium text-slate-400 mb-2">Due Date</label>
+                        <label class="block text-sm font-medium text-slate-400 mb-2">{{ __('app.due_date') }}</label>
                         <div class="relative">
                             <x-lucide-calendar class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-500 pointer-events-none" />
                             <input
@@ -131,7 +131,7 @@
 
                     {{-- Effort Score --}}
                     <div>
-                        <label class="block text-sm font-medium text-slate-400 mb-2">Effort (1-10)</label>
+                        <label class="block text-sm font-medium text-slate-400 mb-2">{{ __('app.effort_score') }}</label>
                         <div class="relative">
                             <x-lucide-gauge class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-500 pointer-events-none" />
                             <input
@@ -157,14 +157,14 @@
                             @click="$wire.close()"
                             class="px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-white transition-colors"
                         >
-                            Cancel
+                            {{ __('app.cancel') }}
                         </button>
                         <button
                             type="submit"
                             wire:loading.attr="disabled"
                             class="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium rounded-lg transition-colors shadow-lg shadow-emerald-500/20 disabled:opacity-50 flex items-center gap-2"
                         >
-                            <span wire:loading.remove wire:target="create">Create Task</span>
+                            <span wire:loading.remove wire:target="create">{{ __('app.create_task') }}</span>
                             <span wire:loading wire:target="create">
                                 <svg class="animate-spin size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

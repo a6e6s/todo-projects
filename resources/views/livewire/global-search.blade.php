@@ -41,7 +41,7 @@
                     type="text"
                     wire:model.live.debounce.300ms="query"
                     x-init="$nextTick(() => $el.focus())"
-                    placeholder="Search projects, tasks..."
+                    placeholder="{{ __('app.search_placeholder') }}"
                     class="w-full bg-transparent border-none py-5 pl-14 pr-5 text-lg text-white placeholder-slate-500 focus:ring-0"
                 />
                 <div class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
@@ -55,7 +55,7 @@
                     {{-- Projects --}}
                     @if($this->results['projects']->count() > 0)
                         <div class="p-3">
-                            <h3 class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Projects</h3>
+                            <h3 class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">{{ __('app.projects') }}</h3>
                             <div class="space-y-1">
                                 @foreach($this->results['projects'] as $project)
                                     <button
@@ -78,7 +78,7 @@
                                                 {{ $project->title }}
                                             </p>
                                             <p class="text-xs text-slate-500">
-                                                {{ $project->priority->label() }} Priority
+                                                {{ __('app.priority_label', ['priority' => $project->priority->label()]) }}
                                             </p>
                                         </div>
                                         <x-lucide-arrow-right class="size-4 text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -91,7 +91,7 @@
                     {{-- Tasks --}}
                     @if($this->results['tasks']->count() > 0)
                         <div class="p-3 border-t border-[#283239]">
-                            <h3 class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">Tasks</h3>
+                            <h3 class="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">{{ __('app.tasks') }}</h3>
                             <div class="space-y-1">
                                 @foreach($this->results['tasks'] as $task)
                                     <button
@@ -113,7 +113,7 @@
                                                 {{ $task->title }}
                                             </p>
                                             <p class="text-xs text-slate-500">
-                                                in {{ $task->project->title }}
+                                                {{ __('app.in') }} {{ $task->project->title }}
                                             </p>
                                         </div>
                                         <span class="text-[10px] font-bold uppercase px-2 py-1 rounded {{ $task->status->bgColor() }} {{ $task->status->color() }}">
@@ -129,16 +129,16 @@
                     @if($this->results['projects']->count() === 0 && $this->results['tasks']->count() === 0)
                         <div class="p-12 text-center">
                             <x-lucide-search-x class="size-12 text-slate-600 mx-auto mb-4" />
-                            <p class="text-slate-400 font-medium">No results found</p>
-                            <p class="text-sm text-slate-500 mt-1">Try a different search term</p>
+                            <p class="text-slate-400 font-medium">{{ __('app.no_results') }}</p>
+                            <p class="text-sm text-slate-500 mt-1">{{ __('app.type_to_search') }}</p>
                         </div>
                     @endif
                 @else
                     {{-- Empty State --}}
                     <div class="p-12 text-center">
                         <x-lucide-sparkles class="size-12 text-slate-600 mx-auto mb-4" />
-                        <p class="text-slate-400 font-medium">Start typing to search</p>
-                        <p class="text-sm text-slate-500 mt-1">Search across all your projects and tasks</p>
+                        <p class="text-slate-400 font-medium">{{ __('app.start_typing') }}</p>
+                        <p class="text-sm text-slate-500 mt-1">{{ __('app.search_description') }}</p>
                     </div>
                 @endif
             </div>
@@ -148,15 +148,15 @@
                 <div class="flex items-center gap-4 text-xs text-slate-500">
                     <span class="flex items-center gap-1">
                         <span class="border border-slate-600 rounded px-1.5 py-0.5">↵</span>
-                        Select
+                        {{ __('app.select') }}
                     </span>
                     <span class="flex items-center gap-1">
                         <span class="border border-slate-600 rounded px-1.5 py-0.5">ESC</span>
-                        Close
+                        {{ __('app.close') }}
                     </span>
                 </div>
                 <div class="text-xs text-slate-500">
-                    <span class="text-[#1392ec]">⌘K</span> to open anytime
+                    <span class="text-[#1392ec]">⌘K</span> {{ __('app.open_anytime') }}
                 </div>
             </div>
         </div>

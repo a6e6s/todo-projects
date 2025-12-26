@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="dark" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html class="dark" lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
 <head>
     @include('partials.head')
 </head>
@@ -45,17 +45,53 @@
                 class="hidden md:flex items-center gap-3 relative group w-64 lg:w-96 px-3 py-2 rounded-lg bg-slate-100 dark:bg-[#283239] hover:bg-slate-200 dark:hover:bg-[#323d46] transition-colors cursor-pointer"
             >
                 <x-lucide-search class="size-4 text-slate-400 group-hover:text-[#1392ec] transition-colors" />
-                <span class="text-sm text-slate-500">Search projects, tasks...</span>
+                <span class="text-sm text-slate-500">{{ __('app.search_placeholder') }}</span>
                 <span class="ml-auto text-xs text-slate-500 border border-slate-600 rounded px-1.5 py-0.5">⌘K</span>
             </button>
-                <div class="absolute inset-y-0 right-0 pr-2 flex items-center">
-                    <span class="text-xs text-slate-500 border border-slate-600 rounded px-1.5 py-0.5">⌘K</span>
-                </div>
-            </label>
         </div>
 
         <div class="flex items-center gap-4">
             <div class="flex items-center gap-2">
+                {{-- Language Switcher --}}
+                <div x-data="{ open: false }" class="relative">
+                    <button
+                        @click="open = !open"
+                        class="flex items-center justify-center size-9 rounded-lg hover:bg-slate-100 dark:hover:bg-[#283239] text-slate-500 dark:text-slate-400 transition-colors"
+                        title="{{ __('app.language') }}"
+                    >
+                        <x-lucide-languages class="size-5" />
+                    </button>
+                    <div
+                        x-show="open"
+                        x-transition
+                        @click.away="open = false"
+                        class="absolute right-0 top-full mt-2 w-36 bg-white dark:bg-[#1c2630] border border-slate-200 dark:border-[#283239] rounded-lg shadow-xl z-50 py-1"
+                    >
+                        <a
+                            href="{{ route('language.switch', 'en') }}"
+                            @class([
+                                'flex items-center gap-2 px-3 py-2 text-sm transition-colors',
+                                'text-[#1392ec] bg-[#1392ec]/10' => app()->getLocale() === 'en',
+                                'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#283239]' => app()->getLocale() !== 'en',
+                            ])
+                        >
+                            <span class="text-base">🇺🇸</span>
+                            English
+                        </a>
+                        <a
+                            href="{{ route('language.switch', 'ar') }}"
+                            @class([
+                                'flex items-center gap-2 px-3 py-2 text-sm transition-colors',
+                                'text-[#1392ec] bg-[#1392ec]/10' => app()->getLocale() === 'ar',
+                                'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#283239]' => app()->getLocale() !== 'ar',
+                            ])
+                        >
+                            <span class="text-base">🇸🇦</span>
+                            العربية
+                        </a>
+                    </div>
+                </div>
+
                 {{-- Notifications --}}
                 <button class="flex items-center justify-center size-9 rounded-lg hover:bg-slate-100 dark:hover:bg-[#283239] text-slate-500 dark:text-slate-400 transition-colors relative">
                     <x-lucide-bell class="size-5" />

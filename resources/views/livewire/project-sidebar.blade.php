@@ -27,7 +27,7 @@
     {{-- Header --}}
     <div class="p-5 flex items-center justify-between">
         <div class="flex flex-col">
-            <h1 class="text-sm font-semibold text-slate-200 uppercase tracking-wider">Workspace</h1>
+            <h1 class="text-sm font-semibold text-slate-200 uppercase tracking-wider">{{ __('app.workspace') }}</h1>
             <div class="flex items-center gap-1 text-xs text-slate-500 mt-1 cursor-pointer hover:text-primary transition-colors">
                 <span>{{ auth()->user()->name }}</span>
                 <x-lucide-chevron-down class="size-3" />
@@ -47,7 +47,7 @@
             {{-- Active Projects --}}
             <div>
                 <h3 class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
-                    Active Projects
+                    {{ __('app.active_projects') }}
                 </h3>
                 <div x-ref="projectList" class="space-y-1" wire:ignore.self>
                     @forelse($this->projects as $project)
@@ -121,7 +121,7 @@
                                     class="text-xs transition-colors"
                                     style="color: {{ $project->color ?? '#3b82f6' }}"
                                 >
-                                    {{ $percentage }}% Complete
+                                    {{ $percentage }}% {{ __('app.complete') }}
                                 </span>
                             </div>
 
@@ -148,14 +148,14 @@
                                         class="w-full px-3 py-2 text-left text-sm text-slate-300 hover:bg-slate-700 hover:text-white flex items-center gap-2"
                                     >
                                         <x-lucide-pencil class="size-4" />
-                                        Edit
+                                        {{ __('app.edit') }}
                                     </button>
                                     <button
                                         wire:click="archiveProject({{ $project->id }})"
                                         class="w-full px-3 py-2 text-left text-sm text-slate-300 hover:bg-slate-700 hover:text-white flex items-center gap-2"
                                     >
                                         <x-lucide-archive class="size-4" />
-                                        Archive
+                                        {{ __('app.archive') }}
                                     </button>
                                 </div>
                             </div>
@@ -163,12 +163,12 @@
                     @empty
                         <div class="flex flex-col items-center justify-center py-8 text-slate-500">
                             <x-lucide-folder-plus class="size-10 mb-2 opacity-50" />
-                            <span class="text-sm">No projects yet</span>
+                            <span class="text-sm">{{ __('app.no_projects') }}</span>
                             <button
                                 wire:click="$dispatch('open-create-project-modal')"
                                 class="mt-2 text-xs text-primary hover:underline"
                             >
-                                Create your first project
+                                {{ __('app.create_first_project') }}
                             </button>
                         </div>
                     @endforelse
@@ -179,7 +179,7 @@
             @if($this->archivedProjects->isNotEmpty())
                 <details class="group">
                     <summary class="flex items-center justify-between px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider cursor-pointer hover:text-primary transition-colors select-none">
-                        <span>Archived Projects ({{ $this->archivedProjects->count() }})</span>
+                        <span>{{ __('app.archived_projects') }} ({{ $this->archivedProjects->count() }})</span>
                         <x-lucide-chevron-down class="size-4 transition-transform duration-200 group-open:rotate-180" />
                     </summary>
                     <div class="space-y-1 mt-1">
@@ -251,7 +251,7 @@
             class="flex items-center gap-3 text-slate-500 hover:text-primary cursor-pointer transition-colors p-2 rounded-lg hover:bg-slate-800/50 w-full"
         >
             <x-lucide-plus-circle class="size-5" />
-            <span class="text-sm font-medium">New Project</span>
+            <span class="text-sm font-medium">{{ __('app.new_project') }}</span>
         </button>
     </div>
 </aside>

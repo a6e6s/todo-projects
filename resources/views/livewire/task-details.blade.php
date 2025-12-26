@@ -41,7 +41,7 @@
                         <x-lucide-clipboard-list class="size-5 text-[#1392ec]" />
                     </div>
                     <div>
-                        <h2 class="text-lg font-semibold text-white">Task Details</h2>
+                        <h2 class="text-lg font-semibold text-white">{{ __('app.task_details') }}</h2>
                         @if($this->task)
                             <p class="text-xs text-slate-500">{{ $this->task->project->title }}</p>
                         @endif
@@ -60,23 +60,23 @@
                 <div class="flex-1 overflow-y-auto p-6 space-y-6">
                     {{-- Title --}}
                     <div>
-                        <label class="block text-sm font-medium text-slate-400 mb-2">Title</label>
+                        <label class="block text-sm font-medium text-slate-400 mb-2">{{ __('app.title') }}</label>
                         <input
                             type="text"
                             wire:model="title"
                             class="w-full px-4 py-3 bg-[#1c2630] border border-[#283239] rounded-lg text-white placeholder-slate-500 focus:border-[#1392ec] focus:ring-1 focus:ring-[#1392ec] transition-colors"
-                            placeholder="Task title..."
+                            placeholder="{{ __('app.title_placeholder') }}"
                         />
                     </div>
 
                     {{-- Description --}}
                     <div>
-                        <label class="block text-sm font-medium text-slate-400 mb-2">Description</label>
+                        <label class="block text-sm font-medium text-slate-400 mb-2">{{ __('app.description') }}</label>
                         <textarea
                             wire:model="description"
                             rows="4"
                             class="w-full px-4 py-3 bg-[#1c2630] border border-[#283239] rounded-lg text-white placeholder-slate-500 focus:border-[#1392ec] focus:ring-1 focus:ring-[#1392ec] transition-colors resize-none"
-                            placeholder="Add a description..."
+                            placeholder="{{ __('app.description_placeholder') }}"
                         ></textarea>
                     </div>
 
@@ -84,7 +84,7 @@
                     <div class="grid grid-cols-2 gap-4">
                         {{-- Due Date --}}
                         <div>
-                            <label class="block text-sm font-medium text-slate-400 mb-2">Due Date</label>
+                            <label class="block text-sm font-medium text-slate-400 mb-2">{{ __('app.due_date') }}</label>
                             <div class="relative">
                                 <x-lucide-calendar class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-500 pointer-events-none" />
                                 <input
@@ -97,7 +97,7 @@
 
                         {{-- Effort Score --}}
                         <div>
-                            <label class="block text-sm font-medium text-slate-400 mb-2">Effort Score</label>
+                            <label class="block text-sm font-medium text-slate-400 mb-2">{{ __('app.effort_score') }}</label>
                             <div class="relative">
                                 <x-lucide-gauge class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-500 pointer-events-none" />
                                 <input
@@ -114,12 +114,12 @@
 
                     {{-- Assignee --}}
                     <div>
-                        <label class="block text-sm font-medium text-slate-400 mb-2">Assignee</label>
+                        <label class="block text-sm font-medium text-slate-400 mb-2">{{ __('app.assignee') }}</label>
                         <select
                             wire:model="assigneeId"
                             class="w-full px-4 py-3 bg-[#1c2630] border border-[#283239] rounded-lg text-white focus:border-[#1392ec] focus:ring-1 focus:ring-[#1392ec] transition-colors"
                         >
-                            <option value="">Unassigned</option>
+                            <option value="">{{ __('app.unassigned') }}</option>
                             @foreach($this->teamMembers as $member)
                                 <option value="{{ $member->id }}">{{ $member->name }}</option>
                             @endforeach
@@ -132,8 +132,8 @@
                     {{-- File Attachments Section --}}
                     <div>
                         <div class="flex items-center justify-between mb-4">
-                            <label class="text-sm font-medium text-slate-400">Attachments</label>
-                            <span class="text-xs text-slate-500">{{ $this->attachments->count() }} file(s)</span>
+                            <label class="text-sm font-medium text-slate-400">{{ __('app.attachments') }}</label>
+                            <span class="text-xs text-slate-500">{{ __('app.file_count', ['count' => $this->attachments->count()]) }}</span>
                         </div>
 
                         {{-- File Dropzone --}}
@@ -158,9 +158,9 @@
                                     <x-lucide-cloud-upload class="size-6 text-slate-400" />
                                 </div>
                                 <p class="text-sm text-slate-400 mb-1">
-                                    <span class="text-[#1392ec] font-medium">Click to upload</span> or drag and drop
+                                    <span class="text-[#1392ec] font-medium">{{ __('app.click_to_upload') }}</span> {{ __('app.or_drag_drop') }}
                                 </p>
-                                <p class="text-xs text-slate-500">PNG, JPG, PDF, DOC up to 10MB</p>
+                                <p class="text-xs text-slate-500">{{ __('app.file_types_limit') }}</p>
                             </div>
                         </div>
 
@@ -171,14 +171,14 @@
                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                 </svg>
-                                <span>Uploading files...</span>
+                                <span>{{ __('app.uploading_files') }}</span>
                             </div>
                         </div>
 
                         {{-- Pending Files (before upload) --}}
                         @if(count($files) > 0)
                             <div class="mt-4 space-y-2">
-                                <p class="text-xs text-slate-500 font-medium">Ready to upload:</p>
+                                <p class="text-xs text-slate-500 font-medium">{{ __('app.ready_to_upload') }}</p>
                                 @foreach($files as $index => $file)
                                     <div class="flex items-center justify-between p-3 bg-[#1c2630] rounded-lg border border-[#283239]">
                                         <div class="flex items-center gap-3">
@@ -203,7 +203,7 @@
                                     wire:loading.attr="disabled"
                                     class="w-full mt-2 px-4 py-2 bg-[#1392ec] hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
                                 >
-                                    Upload {{ count($files) }} file(s)
+                                    {{ __('app.upload_files', ['count' => count($files)]) }}
                                 </button>
                             </div>
                         @endif
@@ -256,7 +256,7 @@
                                         {{-- Delete Button --}}
                                         <button
                                             wire:click="removeFile({{ $attachment->id }})"
-                                            wire:confirm="Are you sure you want to delete this file?"
+                                            wire:confirm="{{ __('app.confirm_delete_file') }}"
                                             class="absolute top-2 right-2 p-1.5 bg-red-500/80 rounded-lg text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
                                         >
                                             <x-lucide-trash-2 class="size-3.5" />
@@ -274,14 +274,14 @@
                         wire:click="close"
                         class="px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-white transition-colors"
                     >
-                        Cancel
+                        {{ __('app.cancel') }}
                     </button>
                     <button
                         wire:click="save"
                         wire:loading.attr="disabled"
                         class="px-6 py-2.5 bg-[#1392ec] hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors shadow-lg shadow-blue-500/20 disabled:opacity-50 flex items-center gap-2"
                     >
-                        <span wire:loading.remove wire:target="save">Save Changes</span>
+                        <span wire:loading.remove wire:target="save">{{ __('app.save_changes') }}</span>
                         <span wire:loading wire:target="save">
                             <svg class="animate-spin size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -298,7 +298,7 @@
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        <p class="text-slate-400">Loading task...</p>
+                        <p class="text-slate-400">{{ __('app.loading_task') }}</p>
                     </div>
                 </div>
             @endif

@@ -6,11 +6,20 @@ use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use App\Livewire\Settings\TwoFactor;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use Laravel\Fortify\Features;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+// Language Switcher
+Route::get('language/{locale}', function (string $locale) {
+    if (in_array($locale, ['en', 'ar'])) {
+        Session::put('locale', $locale);
+    }
+    return redirect()->back();
+})->name('language.switch');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

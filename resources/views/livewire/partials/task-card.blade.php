@@ -38,7 +38,7 @@
         {{-- Priority Badge --}}
         @if($isDone)
             <span class="px-2 py-1 rounded bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase tracking-wider">
-                Done
+                {{ __('app.done') }}
             </span>
         @else
             <span class="px-2 py-1 rounded {{ $colors['bg'] }} {{ $colors['text'] }} text-[10px] font-bold uppercase tracking-wider">
@@ -72,11 +72,11 @@
         @if($task->isOverdue())
             <div class="flex items-center gap-1.5 mb-3 text-red-400">
                 <x-lucide-alert-circle class="size-4" />
-                <span class="text-xs font-medium">Overdue</span>
+                <span class="text-xs font-medium">{{ __('app.overdue') }}</span>
             </div>
         @elseif($task->isDueToday())
             <div class="px-2 py-1 rounded bg-red-500/20 text-red-400 text-[10px] font-bold inline-block mb-3">
-                Due Today
+                {{ __('app.due_today') }}
             </div>
         @endif
     @endif
@@ -87,7 +87,7 @@
         <div class="flex items-center gap-3">
             @if($isDone)
                 <span class="text-xs text-slate-500 font-medium">
-                    Completed {{ $task->updated_at->diffForHumans() }}
+                    {{ __('app.completed_ago', ['time' => $task->updated_at->diffForHumans()]) }}
                 </span>
             @elseif($task->due_date)
                 <div class="flex items-center gap-1.5 {{ $task->isOverdue() ? 'text-red-400' : 'text-slate-500' }}">
@@ -98,7 +98,7 @@
 
             {{-- Attachments Count --}}
             @if($task->attachments_count > 0)
-                <div class="flex items-center gap-1 text-slate-500" title="{{ $task->attachments_count }} attachment(s)">
+                <div class="flex items-center gap-1 text-slate-500" title="{{ __('app.attachments_count', ['count' => $task->attachments_count]) }}">
                     <x-lucide-paperclip class="size-3.5" />
                     <span class="text-xs">{{ $task->attachments_count }}</span>
                 </div>
@@ -109,7 +109,7 @@
         <div class="flex items-center gap-2">
             {{-- Effort Score --}}
             @if($task->effort_score)
-                <div class="flex items-center text-slate-500" title="Effort: {{ $task->effort_score }} points">
+                <div class="flex items-center text-slate-500" title="{{ __('app.effort_points', ['score' => $task->effort_score]) }}">
                     <x-lucide-gauge class="size-4" />
                     <span class="text-xs ml-0.5">{{ $task->effort_score }}</span>
                 </div>
@@ -133,7 +133,7 @@
                     @endunless
                 </div>
             @else
-                <div class="size-6 rounded-full bg-slate-700 flex items-center justify-center text-[10px] text-slate-400" title="Unassigned">
+                <div class="size-6 rounded-full bg-slate-700 flex items-center justify-center text-[10px] text-slate-400" title="{{ __('app.unassigned') }}">
                     ?
                 </div>
             @endif
