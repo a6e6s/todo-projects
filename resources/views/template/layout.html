@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>FluxFlow Dashboard</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1392ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101a22",
+                        "surface-dark": "#1c2630",
+                        "card-dark": "#232e3a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                    boxShadow: {
+                        'glow': '0 0 15px -3px rgba(19, 146, 236, 0.3)',
+                        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        .draggable-source {
+            cursor: grab;
+        }
+
+        .draggable-source:active {
+            cursor: grabbing;
+        }
+
+        .drop-zone {
+            border: 2px dashed #334155;
+            background-color: rgba(30, 41, 59, 0.5);
+        }
+
+        details>summary {
+            list-style: none;
+        }
+
+        details>summary::-webkit-details-marker {
+            display: none;
+        }
+    </style>
+</head>
+
+<body
+    class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white overflow-hidden h-screen flex flex-col">
+    <header
+        class="h-16 shrink-0 flex items-center justify-between border-b border-gray-200 dark:border-[#283239] bg-white dark:bg-[#111518] px-6 z-20">
+        <div class="flex items-center gap-8">
+            <div class="flex items-center gap-3 text-primary">
+                <div class="size-8 flex items-center justify-center rounded-lg bg-primary/10">
+                    <span class="material-symbols-outlined text-primary" style="font-size: 24px;">waves</span>
+                </div>
+                <h2 class="text-slate-900 dark:text-white text-xl font-bold tracking-tight">FluxFlow</h2>
+            </div>
+            <label class="hidden md:flex relative group w-64 lg:w-96">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span
+                        class="material-symbols-outlined text-gray-400 group-focus-within:text-primary transition-colors">search</span>
+                </div>
+                <input
+                    class="block w-full rounded-lg border-none bg-gray-100 dark:bg-[#283239] py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:ring-2 focus:ring-primary dark:text-white transition-all"
+                    placeholder="Search projects, tasks, or tags..." type="text" />
+                <div class="absolute inset-y-0 right-0 pr-2 flex items-center">
+                    <span class="text-xs text-gray-500 border border-gray-600 rounded px-1.5 py-0.5">⌘K</span>
+                </div>
+            </label>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
+                <button
+                    class="flex items-center justify-center size-9 rounded-lg hover:bg-gray-100 dark:hover:bg-[#283239] text-gray-500 dark:text-gray-400 transition-colors relative">
+                    <span class="material-symbols-outlined" style="font-size: 20px;">notifications</span>
+                    <span
+                        class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-[#111518]"></span>
+                </button>
+                <button
+                    class="flex items-center justify-center size-9 rounded-lg hover:bg-gray-100 dark:hover:bg-[#283239] text-gray-500 dark:text-gray-400 transition-colors">
+                    <span class="material-symbols-outlined" style="font-size: 20px;">settings</span>
+                </button>
+            </div>
+            <div class="h-6 w-px bg-gray-200 dark:bg-gray-700 mx-2"></div>
+            <button class="flex items-center gap-3 group">
+                <div class="size-9 rounded-full bg-cover bg-center ring-2 ring-transparent group-hover:ring-primary transition-all"
+                    data-alt="User profile avatar showing a generic silhouette"
+                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD3OmN_ICeJbhOkO6fKHj0uosNRa132h64_N6PRkGhrR1w-MFYHAIV_UmM_fc6WKBOmO06jJ8P2HsSlFD6BTZCKHtYUA9jqN6SC3y5P1WPnca_wO14gv8rh0rypkqCrwoX1Ygjp66XrWxkg9IE5WGs6UkEY2Il9av5s0yKKZzG4f1xi1_i_BTJYrBWNl1qxwBD8MbviAjAnEZV9IS5H-tpMyWyTAa54snEI7gGLneVYezw72_d7Tato_QpuyseQBYSaS2QkebRiWog');">
+                </div>
+            </button>
+        </div>
+    </header>
+    <div class="flex flex-1 overflow-hidden">
+        <aside
+            class="w-80 flex flex-col border-r border-gray-200 dark:border-[#283239] bg-gray-50 dark:bg-[#101a22] shrink-0 transition-all duration-300">
+            <div class="p-5 flex items-center justify-between">
+                <div class="flex flex-col">
+                    <h1 class="text-sm font-semibold text-slate-700 dark:text-gray-200 uppercase tracking-wider">
+                        Workspace</h1>
+                    <div class="flex items-center gap-1 text-xs text-gray-500 mt-1 cursor-pointer hover:text-primary">
+                        <span>Pro Plan Team</span>
+                        <span class="material-symbols-outlined text-[14px]">expand_more</span>
+                    </div>
+                </div>
+                <button
+                    class="size-8 flex items-center justify-center rounded-lg bg-primary hover:bg-blue-600 text-white shadow-lg shadow-blue-500/30 transition-all">
+                    <span class="material-symbols-outlined text-[20px]">add</span>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto px-3 pb-4">
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Active Cycles
+                        </h3>
+                        <div class="space-y-1">
+                            <div
+                                class="group relative flex items-center gap-3 p-3 rounded-lg bg-surface-dark border border-[#283239] shadow-glow cursor-pointer">
+                                <div class="absolute left-0 top-3 bottom-3 w-1 rounded-r-full bg-primary"></div>
+                                <div class="relative size-10 shrink-0 flex items-center justify-center">
+                                    <svg class="size-full -rotate-90" viewBox="0 0 36 36">
+                                        <path class="text-gray-700"
+                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            fill="none" stroke="currentColor" stroke-width="3"></path>
+                                        <path class="text-primary"
+                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            fill="none" stroke="currentColor" stroke-dasharray="75, 100"
+                                            stroke-width="3"></path>
+                                    </svg>
+                                    <span
+                                        class="material-symbols-outlined absolute text-white text-[18px]">rocket_launch</span>
+                                </div>
+                                <div class="flex flex-col flex-1 min-w-0">
+                                    <span class="text-sm font-medium text-white truncate">Q3 Marketing Push</span>
+                                    <span class="text-xs text-primary">75% Complete</span>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-gray-500 hover:text-white text-[16px]">more_vert</span>
+                            </div>
+                            <div
+                                class="group relative flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-[#1c2630] cursor-pointer transition-colors">
+                                <div class="relative size-10 shrink-0 flex items-center justify-center">
+                                    <svg class="size-full -rotate-90" viewBox="0 0 36 36">
+                                        <path class="text-gray-300 dark:text-gray-700"
+                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            fill="none" stroke="currentColor" stroke-width="3"></path>
+                                        <path class="text-purple-500"
+                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            fill="none" stroke="currentColor" stroke-dasharray="40, 100"
+                                            stroke-width="3"></path>
+                                    </svg>
+                                    <span
+                                        class="material-symbols-outlined absolute text-gray-500 dark:text-gray-400 group-hover:text-purple-500 transition-colors text-[18px]">language</span>
+                                </div>
+                                <div class="flex flex-col flex-1 min-w-0">
+                                    <span
+                                        class="text-sm font-medium text-gray-700 dark:text-gray-300 truncate group-hover:text-white">Website
+                                        Redesign</span>
+                                    <span class="text-xs text-gray-500 dark:text-gray-500 group-hover:text-gray-400">40%
+                                        Complete</span>
+                                </div>
+                            </div>
+                            <div
+                                class="group relative flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-[#1c2630] cursor-pointer transition-colors">
+                                <div class="relative size-10 shrink-0 flex items-center justify-center">
+                                    <svg class="size-full -rotate-90" viewBox="0 0 36 36">
+                                        <path class="text-gray-300 dark:text-gray-700"
+                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            fill="none" stroke="currentColor" stroke-width="3"></path>
+                                        <path class="text-teal-500"
+                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            fill="none" stroke="currentColor" stroke-dasharray="10, 100"
+                                            stroke-width="3"></path>
+                                    </svg>
+                                    <span
+                                        class="material-symbols-outlined absolute text-gray-500 dark:text-gray-400 group-hover:text-teal-500 transition-colors text-[18px]">build</span>
+                                </div>
+                                <div class="flex flex-col flex-1 min-w-0">
+                                    <span
+                                        class="text-sm font-medium text-gray-700 dark:text-gray-300 truncate group-hover:text-white">Internal
+                                        Tooling</span>
+                                    <span class="text-xs text-gray-500 dark:text-gray-500 group-hover:text-gray-400">10%
+                                        Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <details class="group">
+                        <summary
+                            class="flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider cursor-pointer hover:text-primary transition-colors select-none">
+                            <span>Archived Projects (The Vault)</span>
+                            <span
+                                class="material-symbols-outlined text-[16px] transition-transform duration-200 group-open:rotate-180">expand_more</span>
+                        </summary>
+                        <div class="space-y-1 mt-1">
+                            <div
+                                class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-[#1c2630] cursor-pointer opacity-60 hover:opacity-100 transition-all">
+                                <div class="relative size-10 shrink-0 flex items-center justify-center grayscale">
+                                    <svg class="size-full -rotate-90" viewBox="0 0 36 36">
+                                        <path class="text-gray-300 dark:text-gray-700"
+                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            fill="none" stroke="currentColor" stroke-width="3"></path>
+                                        <path class="text-gray-500"
+                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            fill="none" stroke="currentColor" stroke-dasharray="100, 100"
+                                            stroke-width="3"></path>
+                                    </svg>
+                                    <span
+                                        class="material-symbols-outlined absolute text-gray-500 text-[18px]">inventory_2</span>
+                                </div>
+                                <div class="flex flex-col flex-1 min-w-0">
+                                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400 truncate">Q1
+                                        Legacy Data</span>
+                                    <span class="text-xs text-gray-500">Archived Apr 15</span>
+                                </div>
+                            </div>
+                            <div
+                                class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-[#1c2630] cursor-pointer opacity-60 hover:opacity-100 transition-all">
+                                <div class="relative size-10 shrink-0 flex items-center justify-center grayscale">
+                                    <svg class="size-full -rotate-90" viewBox="0 0 36 36">
+                                        <path class="text-gray-300 dark:text-gray-700"
+                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            fill="none" stroke="currentColor" stroke-width="3"></path>
+                                        <path class="text-gray-500"
+                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            fill="none" stroke="currentColor" stroke-dasharray="85, 100"
+                                            stroke-width="3"></path>
+                                    </svg>
+                                    <span
+                                        class="material-symbols-outlined absolute text-gray-500 text-[18px]">pause_circle</span>
+                                </div>
+                                <div class="flex flex-col flex-1 min-w-0">
+                                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400 truncate">Mobile
+                                        App V1</span>
+                                    <span class="text-xs text-gray-500">Paused</span>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+            <div class="p-4 border-t border-gray-200 dark:border-[#283239]">
+                <div
+                    class="flex items-center gap-3 text-gray-500 hover:text-primary cursor-pointer transition-colors p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-[#1c2630]">
+                    <span class="material-symbols-outlined">add_circle</span>
+                    <span class="text-sm font-medium">New Project</span>
+                </div>
+            </div>
+        </aside>
+        <main class="flex-1 flex flex-col min-w-0 bg-white dark:bg-background-dark">
+            <div class="px-8 py-6 flex items-end justify-between border-b border-gray-200 dark:border-[#283239]">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-semibold text-primary uppercase tracking-wider">Strategic
+                            Project</span>
+                        <span class="text-xs text-gray-500">• Due Oct 30</span>
+                    </div>
+                    <h1 class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Q3 Marketing Push</h1>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex -space-x-2 mr-4">
+                        <div class="size-8 rounded-full ring-2 ring-white dark:ring-[#111518] bg-cover bg-center"
+                            data-alt="Team member avatar"
+                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBQJt9lce25PD4uKiwHlnmJ2Q4b3XRHctdHvFvgXFZaY82KZBEw9D-rNKtKUGnuJif3j5d3SLLxowbfFnEUXBk8z3kibjOaolnQ7uouJ5D9nao5abHArsVceDKgmnSZ3ikWz2Bms2ywom1qh1BxmYdKC8NG4zpzKqmYIavZx79BfBH-g6amUqm3bTcvTIzHbUUp-j4NQCOfw9RgA5I-YkusNawd_loM-C4da9VRayY6UgycdGlcanGHXz7qvDh3J5tfY0rcHgQ8XjE');">
+                        </div>
+                        <div class="size-8 rounded-full ring-2 ring-white dark:ring-[#111518] bg-cover bg-center"
+                            data-alt="Team member avatar"
+                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDeVTCJgiuWMiwLbiLP-Gpi-dsV9op1UmKLcTRyjJo2Mc6ZXUc3HawSo_C1lQw34-tXd8_ofNblvmjIycnmsd64w30ozEsE0IeYkrXTDEZRXfQ3VzQIZ1oalK-yNRg2wyhXUTQqntQk90hOJ8tVcfnh4nFMZ2SYPiwDE4IdJsHZM5MgRIY2RnQGdfO8nTyYdz2bLOfhIgh99dmXKlEzDf_zLXx1M4FuZ5-BRjNo8XWfK-u5-PJt9dOqlUHD6aSWY6zZzfcR32PvfTg');">
+                        </div>
+                        <div
+                            class="size-8 rounded-full ring-2 ring-white dark:ring-[#111518] flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-xs font-medium text-gray-600 dark:text-gray-300">
+                            +3</div>
+                    </div>
+                    <button
+                        class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-[#283239] rounded-lg hover:bg-gray-200 dark:hover:bg-[#323d46] transition-colors">
+                        <span class="material-symbols-outlined text-[18px]">filter_list</span>
+                        Filter
+                    </button>
+                    <button
+                        class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/20">
+                        <span class="material-symbols-outlined text-[18px]">add</span>
+                        Add Task
+                    </button>
+                </div>
+            </div>
+            <div class="flex-1 overflow-x-auto overflow-y-hidden p-8">
+                <div class="flex h-full gap-6 min-w-[1000px]">
+                    <div class="flex flex-col w-80 shrink-0">
+                        <div class="flex items-center justify-between mb-4 px-1">
+                            <div class="flex items-center gap-2">
+                                <div class="size-2 rounded-full bg-slate-400"></div>
+                                <h3
+                                    class="text-sm font-bold text-slate-700 dark:text-gray-200 uppercase tracking-wider">
+                                    To Do</h3>
+                                <span
+                                    class="px-2 py-0.5 rounded-full bg-gray-200 dark:bg-[#283239] text-xs font-medium text-gray-600 dark:text-gray-400">3</span>
+                            </div>
+                            <span
+                                class="material-symbols-outlined text-gray-400 hover:text-white cursor-pointer text-[18px]">more_horiz</span>
+                        </div>
+                        <div class="flex-1 overflow-y-auto space-y-3 pr-2 custom-scrollbar">
+                            <div
+                                class="group draggable-source bg-white dark:bg-[#1c2630] p-4 rounded-xl border border-gray-200 dark:border-[#283239] hover:border-primary/50 dark:hover:border-primary/50 hover:shadow-glow transition-all duration-200 cursor-grab relative overflow-hidden">
+                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-500"></div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <span
+                                        class="px-2 py-1 rounded bg-red-500/10 text-red-500 text-[10px] font-bold uppercase tracking-wider">High
+                                        Priority</span>
+                                    <span
+                                        class="material-symbols-outlined text-gray-400 hover:text-primary cursor-pointer text-[16px]">edit</span>
+                                </div>
+                                <h4 class="text-sm font-semibold text-slate-800 dark:text-white leading-snug mb-3">Draft
+                                    initial campaign wireframes</h4>
+                                <div class="flex items-center justify-between mt-4">
+                                    <div class="flex items-center gap-2 text-orange-400">
+                                        <span class="material-symbols-outlined text-[16px]">timer</span>
+                                        <span class="text-xs font-medium">2 days left</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="flex items-center text-gray-500" title="Complexity: 5 points">
+                                            <span class="material-symbols-outlined text-[16px]">stairs</span>
+                                            <span class="text-xs ml-0.5">5</span>
+                                        </div>
+                                        <div class="size-6 rounded-full bg-cover bg-center" data-alt="Assignee avatar"
+                                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAmMwhU0sNtJ8gVMV5EOH70J-dIV4pKtIgEngBS1Aw1kBr6pcr8PAWvYExfg9R3eazBasQPDG_is5ccdwqfp6zmLe1SUAWG-YPOlcJnQuzTYgupdKK6MgfG66Zi3ELGYR42g8fHoKaDiJdWdjFR3YKphVLXqXZyFfVS9oq6L-yCNxlvhUP_TB5soZ4ljaczEFNxzyGM40ImMmGIKJo4tNn9n4n8_n_n8aSq2D6XHMTViuWIxbP9Kosu-iPjbXCj-xrtvYcXiLJeV3M');">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="draggable-source bg-white dark:bg-[#1c2630] p-4 rounded-xl border border-gray-200 dark:border-[#283239] hover:border-primary/50 dark:hover:border-primary/50 hover:shadow-glow transition-all duration-200 cursor-grab relative overflow-hidden">
+                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-500"></div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <span
+                                        class="px-2 py-1 rounded bg-yellow-500/10 text-yellow-500 text-[10px] font-bold uppercase tracking-wider">Medium</span>
+                                </div>
+                                <h4 class="text-sm font-semibold text-slate-800 dark:text-white leading-snug mb-3">
+                                    Copywriting for landing page</h4>
+                                <div class="flex items-center justify-between mt-4">
+                                    <div class="flex items-center gap-2 text-gray-500">
+                                        <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                                        <span class="text-xs font-medium">Oct 12</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="flex items-center text-gray-500">
+                                            <span class="material-symbols-outlined text-[16px]">stairs</span>
+                                            <span class="text-xs ml-0.5">3</span>
+                                        </div>
+                                        <div class="size-6 rounded-full bg-cover bg-center" data-alt="Assignee avatar"
+                                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCF7Nuep6EeFKTyKgl37VOGDoOa6jYd0mpqw8vVsAoJmwcbq5uTVBX29bYy_j1UAyq550RsgTkYdQMVSqm7cXyE2HEJG8kUnohbRkVnJSiIRJ82PosfvG_IofNCgXqMpKpH_0m1-QIw5x0GRH9yeSnh0SCfKBPUJ8GQuHURFIyM1uSuVYTOCrBvLa_4hOF5oThg8NXt7W4DwRSWAxUp0f2hwoZNnivVeEJeaLjJMocOKO-7j_Jprlb3PqGChecX05qmF3UISpaXb3c');">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="draggable-source bg-white dark:bg-[#1c2630] p-4 rounded-xl border border-gray-200 dark:border-[#283239] hover:border-primary/50 dark:hover:border-primary/50 hover:shadow-glow transition-all duration-200 cursor-grab relative overflow-hidden">
+                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-400"></div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <span
+                                        class="px-2 py-1 rounded bg-blue-400/10 text-blue-400 text-[10px] font-bold uppercase tracking-wider">Low</span>
+                                </div>
+                                <h4 class="text-sm font-semibold text-slate-800 dark:text-white leading-snug mb-3">Asset
+                                    gathering from design team</h4>
+                                <div class="w-full h-1 bg-gray-700 rounded-full mt-2 mb-3 overflow-hidden">
+                                    <div class="h-full bg-blue-400 w-1/3"></div>
+                                </div>
+                                <div class="flex items-center justify-between mt-2">
+                                    <div class="flex items-center gap-1 text-gray-500">
+                                        <span class="material-symbols-outlined text-[14px]">attachment</span>
+                                        <span class="text-xs">2</span>
+                                    </div>
+                                    <div
+                                        class="size-6 rounded-full bg-gray-700 flex items-center justify-center text-[10px] text-gray-400">
+                                        ?</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-80 shrink-0">
+                        <div class="flex items-center justify-between mb-4 px-1">
+                            <div class="flex items-center gap-2">
+                                <div class="size-2 rounded-full bg-primary shadow-[0_0_8px_rgba(19,146,236,0.6)]"></div>
+                                <h3
+                                    class="text-sm font-bold text-slate-700 dark:text-gray-200 uppercase tracking-wider">
+                                    In Progress</h3>
+                                <span
+                                    class="px-2 py-0.5 rounded-full bg-gray-200 dark:bg-[#283239] text-xs font-medium text-gray-600 dark:text-gray-400">1</span>
+                            </div>
+                            <span
+                                class="material-symbols-outlined text-gray-400 hover:text-white cursor-pointer text-[18px]">more_horiz</span>
+                        </div>
+                        <div class="flex-1 overflow-y-auto space-y-3 pr-2 custom-scrollbar">
+                            <div
+                                class="draggable-source bg-white dark:bg-[#1c2630] p-4 rounded-xl border border-primary/40 shadow-glow cursor-grab relative overflow-hidden">
+                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-purple-500"></div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <div class="flex gap-2">
+                                        <span
+                                            class="px-2 py-1 rounded bg-purple-500/10 text-purple-500 text-[10px] font-bold uppercase tracking-wider">Tech</span>
+                                    </div>
+                                    <div class="px-2 py-1 rounded bg-red-500/20 text-red-400 text-[10px] font-bold">Due
+                                        Today</div>
+                                </div>
+                                <h4 class="text-sm font-semibold text-slate-800 dark:text-white leading-snug mb-3">API
+                                    Integration for Analytics</h4>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span
+                                        class="px-2 py-0.5 rounded border border-gray-600 text-xs text-gray-400">Backend</span>
+                                    <span
+                                        class="px-2 py-0.5 rounded border border-gray-600 text-xs text-gray-400">v2.0</span>
+                                </div>
+                                <div class="flex items-center justify-between mt-4">
+                                    <div class="flex items-center gap-2 text-gray-400">
+                                        <span class="material-symbols-outlined text-[16px]">chat_bubble</span>
+                                        <span class="text-xs font-medium">5</span>
+                                    </div>
+                                    <div class="flex -space-x-2">
+                                        <div class="size-6 rounded-full bg-cover bg-center border border-[#1c2630]"
+                                            data-alt="Assignee avatar"
+                                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB7Hxe-46l1EuZnuqtzIMD6B7UOrspx9rxeuxg3oD266jh4xxUmVlv_QCpqLyCLdq9y-ueup9AAzJcNMZsVFUx8BwBwJRVBkZaysyWKQRUQsb5BtN_3CjtsQIq8-ZIdBF7se5G_rVN1sw6Ru_KAUqu_VDf16LDJN6HG78cuzJNIjm1KN7GOOAmqUvKQd3zgXwP6RmbwX_GNqN-84H77IuEv6pmz3zeoC_9XnSmopwzOYvgOoRkAo6BxSYXS4UhmJqjCHwc49RpLAzE');">
+                                        </div>
+                                        <div class="size-6 rounded-full bg-cover bg-center border border-[#1c2630]"
+                                            data-alt="Assignee avatar"
+                                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBpAYVSyYZV8QiNKvrfDrPyRWSUsfKo99_kfsMehyEamBT9W1hGg5HvKmS9DFl9hcdNgNgoET9D6MD7Bc4K1cBQ_-UK2p-rnOIrqfOgLc1IJbpobRS4HMJ7JrFvJg-11dcqkO1jm1PumfgPETjSeymcmDCYdVmtNWBcdgSNxBcbQ3LPFq39yA7KPxAeCl_naw36YVOwotJW83bKfC-h28xu78JWBLteJoX7wKAhdS3cDMTZZJS4btT833LnIvo6_808YgXvjyCES5s');">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="drop-zone h-24 rounded-xl flex items-center justify-center text-gray-500 text-xs font-medium uppercase tracking-wider opacity-0 hover:opacity-100 transition-opacity">
+                                Drop tasks here
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-80 shrink-0">
+                        <div class="flex items-center justify-between mb-4 px-1">
+                            <div class="flex items-center gap-2">
+                                <div class="size-2 rounded-full bg-yellow-400"></div>
+                                <h3
+                                    class="text-sm font-bold text-slate-700 dark:text-gray-200 uppercase tracking-wider">
+                                    Review</h3>
+                                <span
+                                    class="px-2 py-0.5 rounded-full bg-gray-200 dark:bg-[#283239] text-xs font-medium text-gray-600 dark:text-gray-400">0</span>
+                            </div>
+                            <span
+                                class="material-symbols-outlined text-gray-400 hover:text-white cursor-pointer text-[18px]">more_horiz</span>
+                        </div>
+                        <div
+                            class="flex-1 flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-200 dark:border-[#283239] rounded-xl bg-gray-50 dark:bg-[#101a22]/50">
+                            <div class="p-3 bg-gray-100 dark:bg-[#1c2630] rounded-full mb-3">
+                                <span class="material-symbols-outlined text-gray-400">check_circle</span>
+                            </div>
+                            <span class="text-sm text-gray-500 font-medium">No tasks in review</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col w-80 shrink-0 opacity-70 hover:opacity-100 transition-opacity">
+                        <div class="flex items-center justify-between mb-4 px-1">
+                            <div class="flex items-center gap-2">
+                                <div class="size-2 rounded-full bg-green-500"></div>
+                                <h3
+                                    class="text-sm font-bold text-slate-700 dark:text-gray-200 uppercase tracking-wider">
+                                    Done</h3>
+                                <span
+                                    class="px-2 py-0.5 rounded-full bg-gray-200 dark:bg-[#283239] text-xs font-medium text-gray-600 dark:text-gray-400">1</span>
+                            </div>
+                            <span
+                                class="material-symbols-outlined text-gray-400 hover:text-white cursor-pointer text-[18px]">more_horiz</span>
+                        </div>
+                        <div class="flex-1 overflow-y-auto space-y-3 pr-2 custom-scrollbar">
+                            <div
+                                class="draggable-source bg-white dark:bg-[#1c2630] p-4 rounded-xl border border-gray-200 dark:border-[#283239] transition-all duration-200 cursor-grab relative overflow-hidden">
+                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-green-500"></div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <span
+                                        class="px-2 py-1 rounded bg-green-500/10 text-green-500 text-[10px] font-bold uppercase tracking-wider">Done</span>
+                                    <span class="material-symbols-outlined text-green-500 text-[16px]">check</span>
+                                </div>
+                                <h4
+                                    class="text-sm font-semibold text-gray-500 dark:text-gray-400 line-through leading-snug mb-3">
+                                    Competitor Analysis</h4>
+                                <div class="flex items-center justify-between mt-4">
+                                    <div class="flex items-center gap-2 text-gray-600">
+                                        <span class="text-xs font-medium">Completed yesterday</span>
+                                    </div>
+                                    <div class="size-6 rounded-full bg-cover bg-center grayscale opacity-60"
+                                        data-alt="Assignee avatar"
+                                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDd1diTpOxx7mkWcwmOJID0yyudw4-92fxSjICk9_iHjCzMYMWAhLXUekso-royfrCuQE0Fv67qf6YUlqdoGfGG3x6O-BVfxu7sy2ZvLRyDPtG9kxqm0iWeTmTzJxbjXZTrsgr_YktxVBMY1BNNbQjG7J8p5hBkqg41xGdeoSD1TreaPdESouyKNjxTY6NRQ0rdoEGijwT47EgOFqWopyVq718aYipKfSCGFF1kGw6HekjfRz-ylyuZVZWnCpImk_p-VyMOcaf0n7U');">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>
