@@ -40,7 +40,7 @@
                 <div class="size-8 flex items-center justify-center rounded-lg bg-[#1392ec]/10">
                     <x-lucide-waves class="size-5 text-[#1392ec]" />
                 </div>
-                <h2 class="text-slate-900 dark:text-white text-xl font-bold tracking-tight">ZenFlow</h2>
+                <h2 class="text-slate-900 dark:text-white text-xl font-bold tracking-tight">FluxFlow</h2>
             </a>
 
             {{-- Search - Trigger for Global Search Modal --}}
@@ -119,7 +119,7 @@
     </header>
 
     {{-- Main Content --}}
-    <div class="flex flex-1 overflow-hidden">
+    <div class="flex flex-1 min-h-0 overflow-hidden">
         {{-- Sidebar with @persist for SPA-like navigation --}}
         @persist('sidebar')
             <livewire:project-sidebar />

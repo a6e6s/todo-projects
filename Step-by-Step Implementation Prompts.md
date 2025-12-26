@@ -1,6 +1,6 @@
-# 🚀 ZenFlow Pro: Collaborative Kanban Engine
+# 🚀 FluxFlow Pro: Collaborative Kanban Engine
 
-ZenFlow Pro is a minimalist yet powerful project management workspace designed to bridge the gap between high-level project strategy and granular task execution. Built with the **TALL Stack**, it emphasizes fluid motion, glassmorphic design, and high-utility "power user" features.
+FluxFlow Pro is a minimalist yet powerful project management workspace designed to bridge the gap between high-level project strategy and granular task execution. Built with the **TALL Stack**, it emphasizes fluid motion, glassmorphic design, and high-utility "power user" features.
 
 ---
 
@@ -30,7 +30,7 @@ The system follows a strict ownership model:
 *Goal: Database schema and polymorphic relationships.*
 
 > **AI Agent Prompt:**
-> "Generate Laravel 12 migrations and models for ZenFlow Pro:
+> "Generate Laravel 12 migrations and models for FluxFlow Pro:
 > 1. **User Model:** Default Auth + `profile_photo_path`.
 > 2. **Project Model:** `user_id` (owner), `title`, `icon`, `color`, `sort_order` (int), `priority` (low/med/high) laravel Enum, and `archived_at` (timestamp).
 > 3. **Task Model:** `project_id`, `assigned_to` (nullable user_id), `title`, `description`, `priority`, `status` (todo/doing/done) laravel Enum, `sort_order` (int), `due_date`, and `effort_score`.
@@ -83,7 +83,7 @@ The system follows a strict ownership model:
 *Goal: Keyboard shortcuts and refined visuals.*
 
 > **AI Agent Prompt:**
-> "Add advanced UX features to ZenFlow Pro:
+> "Add advanced UX features to FluxFlow Pro:
 > 1. **Shortcuts:** Alpine.js `@keyup.window` for 'N' (New Task), 'P' (New Project), and 'Esc' (Close Modals).
 > 2. **Visual Feedback:** Add a subtle outer glow to the sidebar icon of 'High Priority' projects.
 > 3. **Search:** A global search bar to filter tasks across all active projects.

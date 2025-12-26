@@ -22,7 +22,7 @@
             });
         }
     }"
-    class="w-80 flex flex-col border-r border-slate-700/50 bg-slate-900 shrink-0 transition-all duration-300"
+    class="w-80 h-full flex flex-col border-r border-slate-700/50 bg-slate-900 shrink-0 transition-all duration-300"
 >
     {{-- Header --}}
     <div class="p-5 flex items-center justify-between">
