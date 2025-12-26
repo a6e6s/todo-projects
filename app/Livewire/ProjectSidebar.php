@@ -9,6 +9,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
 class ProjectSidebar extends Component
@@ -19,10 +21,11 @@ class ProjectSidebar extends Component
     // Computed Properties
     // ─────────────────────────────────────────────────────────────
 
-    #[Computed]
+    #[Computed(persist: true)]
     public function projects(): Collection
     {
         return Project::query()
+            ->select(['id', 'user_id', 'title', 'icon', 'color', 'sort_order', 'priority', 'archived_at'])
             ->where('user_id', Auth::id())
             ->active()
             ->ordered()
@@ -32,10 +35,11 @@ class ProjectSidebar extends Component
             ->get();
     }
 
-    #[Computed]
+    #[Computed(persist: true)]
     public function archivedProjects(): Collection
     {
         return Project::query()
+            ->select(['id', 'user_id', 'title', 'icon', 'color', 'sort_order', 'priority', 'archived_at'])
             ->where('user_id', Auth::id())
             ->archived()
             ->ordered()
@@ -89,6 +93,12 @@ class ProjectSidebar extends Component
             ->update(['archived_at' => null]);
 
         unset($this->projects, $this->archivedProjects);
+    }
+
+    #[On('task-moved')]
+    public function refreshProjects(): void
+    {
+        unset($this->projects);
     }
 
     // ─────────────────────────────────────────────────────────────

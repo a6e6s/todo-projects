@@ -8,6 +8,7 @@ enum TaskStatus: string
 {
     case Todo = 'todo';
     case Doing = 'doing';
+    case Review = 'review';
     case Done = 'done';
 
     public function label(): string
@@ -15,6 +16,7 @@ enum TaskStatus: string
         return match ($this) {
             self::Todo => 'To Do',
             self::Doing => 'In Progress',
+            self::Review => 'Review',
             self::Done => 'Done',
         };
     }
@@ -24,6 +26,7 @@ enum TaskStatus: string
         return match ($this) {
             self::Todo => 'text-slate-400',
             self::Doing => 'text-blue-400',
+            self::Review => 'text-amber-400',
             self::Done => 'text-emerald-400',
         };
     }
@@ -33,6 +36,7 @@ enum TaskStatus: string
         return match ($this) {
             self::Todo => 'bg-slate-400/10',
             self::Doing => 'bg-blue-400/10',
+            self::Review => 'bg-amber-400/10',
             self::Done => 'bg-emerald-400/10',
         };
     }
@@ -42,6 +46,7 @@ enum TaskStatus: string
         return match ($this) {
             self::Todo => 'circle',
             self::Doing => 'circle-dot',
+            self::Review => 'circle-half-stroke',
             self::Done => 'circle-check',
         };
     }

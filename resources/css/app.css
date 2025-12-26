@@ -104,6 +104,29 @@ select:focus[data-flux-control] {
     cursor: grabbing;
 }
 
+/* SortableJS styles */
+.sortable-ghost {
+    opacity: 0.3;
+}
+
+.sortable-chosen {
+    box-shadow: 0 0 15px -3px rgba(19, 146, 236, 0.5);
+}
+
+.sortable-fallback {
+    opacity: 1 !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+[data-task-id] {
+    cursor: grab;
+    user-select: none;
+}
+
+[data-task-id]:active {
+    cursor: grabbing;
+}
+
 /* Details/Summary styles */
 details > summary {
     list-style: none;
