@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
+use App\Enums\Priority;
+use App\Enums\TaskStatus;
 use App\Models\Attachment;
 use App\Models\Task;
 use App\Models\User;
@@ -30,6 +32,7 @@ class TaskDetails extends Component
     public ?string $dueDate = null;
     public ?int $assigneeId = null;
     public ?int $effortScore = null;
+    public Priority $priority = Priority::Medium;
 
     // File uploads
     #[Validate(['files.*' => 'file|max:10240'])] // 10MB max per file
@@ -92,6 +95,7 @@ class TaskDetails extends Component
         $this->description = $this->task->description ?? '';
         $this->dueDate = $this->task->due_date?->format('Y-m-d');
         $this->assigneeId = $this->task->assigned_to;
+        $this->priority = $this->task->priority;
         $this->effortScore = $this->task->effort_score;
 
         // Clear file uploads
@@ -99,6 +103,11 @@ class TaskDetails extends Component
 
         // Clear computed cache
         unset($this->attachments);
+    }
+
+    public function setPriority(string $value): void
+    {
+        $this->priority = Priority::from($value);
     }
 
     public function save(): void
@@ -112,6 +121,7 @@ class TaskDetails extends Component
             'description' => $this->description ?: null,
             'due_date' => $this->dueDate ?: null,
             'assigned_to' => $this->assigneeId,
+            'priority' => $this->priority,
             'effort_score' => $this->effortScore,
         ]);
 
@@ -183,7 +193,7 @@ class TaskDetails extends Component
         $this->open = false;
         $this->taskId = null;
         $this->files = [];
-        $this->reset(['title', 'description', 'dueDate', 'assigneeId', 'effortScore']);
+        $this->reset(['title', 'description', 'dueDate', 'assigneeId', 'effortScore', 'priority']);
     }
 
     // ─────────────────────────────────────────────────────────────
