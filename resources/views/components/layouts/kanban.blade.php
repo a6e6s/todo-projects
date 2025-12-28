@@ -99,54 +99,69 @@
                 </button>
 
                 {{-- Settings --}}
-                <a href="{{ route('profile.edit') }}" wire:navigate class="flex items-center justify-center size-9 rounded-lg hover:bg-slate-100 dark:hover:bg-[#283239] text-slate-500 dark:text-slate-400 transition-colors">
+                <button 
+                    @click="$dispatch('open-user-profile-modal')"
+                    class="flex items-center justify-center size-9 rounded-lg hover:bg-slate-100 dark:hover:bg-[#283239] text-slate-500 dark:text-slate-400 transition-colors"
+                    title="{{ __('Profile Settings') }}"
+                >
                     <x-lucide-settings class="size-5" />
-                </a>
+                </button>
             </div>
 
             <div class="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-2"></div>
 
             {{-- User Dropdown --}}
-            <flux:dropdown position="bottom" align="end">
-                <flux:profile
-                    :initials="auth()->user()->initials()"
-                    icon-trailing="chevron-down"
-                    class="cursor-pointer"
-                />
+            <div x-data="{ open: false }" class="relative">
+                <button
+                    @click="open = !open"
+                    class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#283239] transition-colors"
+                >
+                    <div class="size-8 flex items-center justify-center rounded-lg bg-[#1392ec]/20 text-[#1392ec] text-sm font-semibold">
+                        {{ auth()->user()->initials() }}
+                    </div>
+                    <x-lucide-chevron-down class="size-4 text-slate-400" />
+                </button>
 
-                <flux:menu class="w-[220px]">
-                    <flux:menu.radio.group>
-                        <div class="p-0 text-sm font-normal">
-                            <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                                <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
-                                    <span class="flex h-full w-full items-center justify-center rounded-lg bg-[#1392ec]/20 text-[#1392ec]">
-                                        {{ auth()->user()->initials() }}
-                                    </span>
-                                </span>
-                                <div class="grid flex-1 text-start text-sm leading-tight">
-                                    <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
-                                    <span class="truncate text-xs text-slate-500">{{ auth()->user()->email }}</span>
-                                </div>
-                            </div>
+                <div
+                    x-show="open"
+                    x-transition
+                    @click.away="open = false"
+                    class="absolute right-0 top-full mt-2 w-64 bg-[#1c2630] border border-[#283239] rounded-lg shadow-xl z-50 py-2"
+                >
+                    {{-- User Info --}}
+                    <div class="flex items-center gap-3 px-4 py-3 border-b border-[#283239]">
+                        <div class="size-10 flex items-center justify-center rounded-lg bg-[#1392ec]/20 text-[#1392ec] font-semibold">
+                            {{ auth()->user()->initials() }}
                         </div>
-                    </flux:menu.radio.group>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-white font-medium truncate">{{ auth()->user()->name }}</p>
+                            <p class="text-slate-400 text-sm truncate">{{ auth()->user()->email }}</p>
+                        </div>
+                    </div>
 
-                    <flux:menu.separator />
-
-                    <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
-                        {{ __('Settings') }}
-                    </flux:menu.item>
-
-                    <flux:menu.separator />
-
-                    <form method="POST" action="{{ route('logout') }}" class="w-full">
-                        @csrf
-                        <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                            {{ __('Log Out') }}
-                        </flux:menu.item>
-                    </form>
-                </flux:menu>
-            </flux:dropdown>
+                    {{-- Menu Items --}}
+                    <div class="py-1">
+                        <button
+                            @click="$dispatch('open-user-profile-modal'); open = false"
+                            class="flex items-center gap-3 w-full px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-[#283239] transition-colors"
+                        >
+                            <x-lucide-settings class="size-4" />
+                            {{ __('Settings') }}
+                        </button>
+                        
+                        <form method="POST" action="{{ route('logout') }}" class="w-full">
+                            @csrf
+                            <button
+                                type="submit"
+                                class="flex items-center gap-3 w-full px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-[#283239] transition-colors"
+                            >
+                                <x-lucide-log-out class="size-4" />
+                                {{ __('Log Out') }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -169,6 +184,7 @@
     <livewire:create-project-modal />
     <livewire:edit-project-modal />
     <livewire:create-task-modal />
+    <livewire:user-profile-modal />
 
     @fluxScripts
 </body>

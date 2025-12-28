@@ -1,17 +1,12 @@
 <?php
 
 use App\Livewire\KanbanBoard;
-use App\Livewire\Settings\Appearance;
-use App\Livewire\Settings\Password;
-use App\Livewire\Settings\Profile;
-use App\Livewire\Settings\TwoFactor;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-use Laravel\Fortify\Features;
 
-Route::get('/', function () {
+Route::get('/welcome', function () {
     return view('welcome');
-})->name('home');
+})->name('welcome');
 
 // Language Switcher
 Route::get('language/{locale}', function (string $locale) {
@@ -21,29 +16,16 @@ Route::get('language/{locale}', function (string $locale) {
     return redirect()->back();
 })->name('language.switch');
 
-Route::view('dashboard', 'dashboard')
+Route::get('/', KanbanBoard::class)
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+Route::redirect('dashboard', '/');
 
 Route::get('kanban', KanbanBoard::class)
     ->middleware(['auth', 'verified'])
     ->name('kanban');
 
 Route::middleware(['auth'])->group(function () {
-    Route::redirect('settings', 'settings/profile');
-
-    Route::get('settings/profile', Profile::class)->name('profile.edit');
-    Route::get('settings/password', Password::class)->name('user-password.edit');
-    Route::get('settings/appearance', Appearance::class)->name('appearance.edit');
-
-    Route::get('settings/two-factor', TwoFactor::class)
-        ->middleware(
-            when(
-                Features::canManageTwoFactorAuthentication()
-                    && Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword'),
-                ['password.confirm'],
-                [],
-            ),
-        )
-        ->name('two-factor.show');
+    // Settings routes removed - using modal instead
 });
