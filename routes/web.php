@@ -1,8 +1,15 @@
 <?php
 
 use App\Livewire\KanbanBoard;
+use App\Livewire\LandingPage;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+
+// Landing Page (for guests)
+Route::get('/{locale?}', LandingPage::class)
+    ->middleware('guest')
+    ->where('locale', 'ar')
+    ->name('landing');
 
 Route::get('/welcome', function () {
     return view('welcome');
@@ -16,11 +23,10 @@ Route::get('language/{locale}', function (string $locale) {
     return redirect()->back();
 })->name('language.switch');
 
-Route::get('/', KanbanBoard::class)
+// Dashboard (for authenticated users)
+Route::get('/dashboard', KanbanBoard::class)
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
-
-Route::redirect('dashboard', '/');
 
 Route::get('kanban', KanbanBoard::class)
     ->middleware(['auth', 'verified'])

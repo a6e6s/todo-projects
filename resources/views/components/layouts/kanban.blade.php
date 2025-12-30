@@ -27,7 +27,7 @@
         }
     }
 }" @keydown.window="handleKeydown($event)"
-    class="font-sans bg-slate-100 dark:bg-[#101a22] text-slate-900 dark:text-white overflow-hidden h-screen flex flex-col">
+    class="font-sans bg-slate-100 dark:bg-[#101a22] text-slate-900 dark:text-white overflow-hidden h-screen flex flex-col" style="font-family: 'Cairo', ui-sans-serif, system-ui, sans-serif;">
     {{-- Header --}}
     <header
         class="h-16 shrink-0 flex items-center justify-between border-b border-slate-200 dark:border-slate-700/50 bg-white dark:bg-[#111518] px-6 z-20">
