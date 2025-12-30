@@ -51,6 +51,14 @@
 
         <div class="flex items-center gap-4">
             <div class="flex items-center gap-2">
+                {{-- Theme Toggle --}}
+                <button @click="document.documentElement.classList.toggle('dark')"
+                    class="flex items-center justify-center size-9 rounded-lg hover:bg-slate-100 dark:hover:bg-[#283239] text-slate-500 dark:text-slate-400 transition-colors"
+                    title="Toggle theme">
+                    <x-lucide-sun class="size-5 dark:hidden" />
+                    <x-lucide-moon class="size-5 hidden dark:block" />
+                </button>
+
                 {{-- Language Switcher --}}
                 <div x-data="{ open: false }" class="relative">
                     <button @click="open = !open"
