@@ -35,3 +35,6 @@ Route::get('kanban', KanbanBoard::class)
 Route::middleware(['auth'])->group(function () {
     // Settings routes removed - using modal instead
 });
+Route::post('/keep-alive', function () {
+    return response()->json(['status' => 'alive']);
+})->middleware('auth');
