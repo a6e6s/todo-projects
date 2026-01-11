@@ -44,7 +44,7 @@
         </div>
 
         {{-- Kanban Columns --}}
-        <div class="flex-1 overflow-x-auto overflow-y-hidden p-8">
+        <div class="flex-1 overflow-x-auto overflow-y-hidden p-8" style="height: calc(100vh - 200px);">
             <div class="flex h-full gap-6 min-w-[1200px]">
                 {{-- To Do Column --}}
                 @include('livewire.partials.kanban-column', [

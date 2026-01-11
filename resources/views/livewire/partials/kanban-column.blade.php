@@ -7,7 +7,7 @@
     'emptyIcon' => 'circle',
 ])
 
-<div class="flex flex-col w-80 shrink-0 {{ $status === 'done' ? 'opacity-70 hover:opacity-100 transition-opacity' : '' }}">
+<div class="flex flex-col w-80 h-full shrink-0 {{ $status === 'done' ? 'opacity-70 hover:opacity-100 transition-opacity' : '' }}">
     {{-- Column Header --}}
     <div class="flex items-center justify-between mb-4 px-1">
         <div class="flex items-center gap-2">
@@ -27,7 +27,8 @@
     {{-- Tasks Container (Sortable) --}}
     <div
         data-column="{{ $status }}"
-        class="kanban-column flex-1 overflow-y-auto space-y-3 pr-2 min-h-[200px]"
+        class="kanban-column overflow-y-auto space-y-3 pr-2"
+        style="height: calc(100vh - 260px);"
     >
         @forelse($tasks as $task)
             @include('livewire.partials.task-card', ['task' => $task])
